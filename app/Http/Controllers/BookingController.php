@@ -31,23 +31,8 @@ class BookingController extends Controller
         $date = $request->all()["date"];
         $stadium_id = $request->all()["stadium_id"];
 
-        // Berilgan date (kun) va stadium_id orqali stadionni booking malumotlarini olamiz.
-        $bookings = Booking::where("date", $date)->where("stadium_id", $stadium_id)->pluck("booked_hours");
-        $times = Constants::get_times();
-
-        // booked qilingan vaqtlarni saqlash uchun
-        $reservedTimes = [];
-        foreach ($bookings as $time) {
-            $reservedTimes = array_merge($reservedTimes, json_decode($time, true));
-        }
-
-        // booked qilingan vaqtni times ga solishtiryapmiz. 2ta massivdayam bir xil vaqt bo'lsa demak u booked qilingan.
-        $freeTimes = array_diff($times, $reservedTimes);
-
-        $result = [
-            "date" => $date,
-            "free times" => array_values($freeTimes)
-        ];
+        $result = $this->bookingService->getAvailabilities($date, $stadium_id);
+       
         return $result;
     }
 }
