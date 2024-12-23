@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetAvailabilitiesRequest;
 use App\Http\Requests\StoreBookingRequest;
 use App\Models\Booking;
 use App\Models\Stadium;
@@ -25,7 +26,7 @@ class BookingController extends Controller
         return response()->json($result);
     }
 
-    public function getAvailabilities(Request $request)
+    public function getAvailabilities(GetAvailabilitiesRequest $request)
     {
 
         $date = $request->all()["date"];
