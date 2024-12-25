@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Stadium;
+use Illuminate\Support\Facades\Storage;
 
 class StadiumService {
 
@@ -20,9 +21,14 @@ class StadiumService {
     }
 
 
-    public function storeImages($request)
+    public function storeImage($request)
     {
-        
+        $file = $request->file('file');
+        $fileName = time() . "." . $file->getClientOriginalExtension();
+        $path = "uploads/" . $fileName;
+        Storage::put($path, $file);
+
+        return $path;
     }
 
 }
