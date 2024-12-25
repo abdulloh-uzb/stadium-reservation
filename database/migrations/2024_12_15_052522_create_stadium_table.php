@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("location");
             $table->integer("price");
             $table->string("phone_number")->nullable();
+            $table->json("images")->nullable();
             $table->time("open_time")->nullable();
             $table->time("close_time")->nullable();
             $table->boolean("is_always_open")->default(true);

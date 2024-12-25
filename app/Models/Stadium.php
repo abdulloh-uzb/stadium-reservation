@@ -11,5 +11,5 @@ class Stadium extends Model
     use HasFactory;
 
     protected $table = 'stadium';
-    protected $fillable = ["name", "description", "location", "price", "open_time", "close_time"];
+    protected $fillable = ["name", "description", "location", "price", "images","open_time", "close_time"];
 }

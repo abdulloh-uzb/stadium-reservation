@@ -30,6 +30,7 @@ class StadiumController extends Controller
      */
     public function store(StoreStadiumRequest $request)
     {
+        dd($request->all());
         $this->stadium->store($request);
         return response()->json(["success" => true]);
     }

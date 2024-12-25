@@ -19,4 +19,10 @@ class StadiumService {
         return $result;
     }
 
+
+    public function storeImages($request)
+    {
+        
+    }
+
 }
