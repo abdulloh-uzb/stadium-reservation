@@ -29,7 +29,9 @@ class StoreStadiumRequest extends FormRequest
             "phone_number" => "nullable|regex:/(?:\+998|998)(33|88|90|91|93|94|95|97|98|99|50)\d{7}$/",
             "open_time" => "sometimes|required|date_format:H:i:s",
             "close_time" => "required_with:open_time|date_format:H:i:s|after_or_equal:open_time",
-            "is_always_open" => "nullable|boolean"  
+            "is_always_open" => "nullable|boolean",
+            "images" => "required|array",
+            "images.*" => "image|mimes:png,jpg,jpeg|max:4096"
         ];
     }
 }
