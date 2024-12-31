@@ -18,6 +18,7 @@ class AuthController extends Controller
         ]);
 
         $user = User::create($validated);
+        $user->assignRole("customer");
         $result = ["success"=> true, "message"=> "User registered successfully", "data" => $user];
 
         return response()->json($result);
