@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendingEmail;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
@@ -10,26 +11,19 @@ use Illuminate\Support\Facades\Password;
 
 class PasswordResetController extends Controller
 {
-    public function requestPasswordReset(Request $request)
-    {
-        $request->validate([
-            "email" => "required|email"
-        ]);
+        public function requestPasswordReset(Request $request)
+        {
+            $request->validate([
+                "email" => "required|email"
+            ]);
 
-        $status = Password::sendResetLink(
-            $request->only("email")
-        );
+            SendingEmail::dispatch($request->only("email"));
 
-        return $status === Password::RESET_LINK_SENT ? [
-            "status" => true,
-            "message" => "success",
-            "url" => "",
-        ] :
-            [
-                "status" => false,
-                "message" => $status
+            return [
+                "status" => true,
+                "message" => "success",
             ];
-    }
+        }
 
     public function resetPassword(Request $request)
     {
