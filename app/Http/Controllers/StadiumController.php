@@ -6,6 +6,7 @@ use App\Http\Requests\StoreStadiumRequest;
 use App\Models\Stadium;
 use App\Services\StadiumService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class StadiumController extends Controller
 {
@@ -30,6 +31,7 @@ class StadiumController extends Controller
      */
     public function store(StoreStadiumRequest $request)
     {
+        Gate::authorize("create", Stadium::class);
         $this->stadium->store($request);
         return response()->json(["success" => true]);
     }
@@ -37,25 +39,34 @@ class StadiumController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Stadium $stadium)
     {
-        //
+        return response($stadium);
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Stadium $stadium)
     {
-        //
+        Gate::authorize("update", $stadium);
+
+        $stadium->update($request->all());
+
+        return response()->json([
+            "error" => false,
+            "message" => "success"
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Stadium $stadium)
     {
-        //
+        
+        $stadium->delete();
+        return response()->noContent();
     }
 }

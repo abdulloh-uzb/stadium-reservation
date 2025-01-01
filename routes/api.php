@@ -6,7 +6,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\StadiumController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('stadium', StadiumController::class);
+Route::apiResource('stadium', StadiumController::class)->middleware("auth:sanctum");
 Route::post("/register", [AuthController::class, "register"]);
 Route::post("/login", [AuthController::class, "login"]);
 
