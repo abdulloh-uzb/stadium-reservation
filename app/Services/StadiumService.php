@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Requests\StoreStadiumRequest;
 use App\Models\Stadium;
-use Illuminate\Support\Facades\Storage;
 
 class StadiumService
 {
 
-    public function store($request)
+    public function store(StoreStadiumRequest $request)
     {
         $data = $request->validated();
 
@@ -18,6 +18,8 @@ class StadiumService
         if($request->hasFile("images")){
             $data['images'] = json_encode($this->storeImages($request->file('images')));
         }
+
+        $data['owner_id'] = auth("sanctum")->user()->id;
         $result = Stadium::create($data);
         return $result;
     }

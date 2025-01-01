@@ -37,7 +37,8 @@ class StadiumFactory extends Factory
             "price" => random_int(50000, 500000),
             "open_time" => $open_time,
             "close_time" => $close_time,
-            "is_always_open" => false
+            "is_always_open" => false,
+            "owner_id" => 2
         ];
     }
 }

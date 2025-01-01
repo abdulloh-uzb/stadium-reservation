@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer("price");
             $table->string("phone_number")->nullable();
             $table->json("images")->nullable();
+            $table->foreignId("owner_id")->constrained("users")->cascadeOnDelete();
             $table->time("open_time")->nullable();
             $table->time("close_time")->nullable();
             $table->boolean("is_always_open")->default(true);
