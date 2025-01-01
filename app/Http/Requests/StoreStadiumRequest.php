@@ -31,7 +31,7 @@ class StoreStadiumRequest extends FormRequest
             "close_time" => "required_with:open_time|date_format:H:i:s|after_or_equal:open_time",
             "is_always_open" => "nullable|boolean",
             "images" => "required|array",
-            "images.*" => "image|mimes:png,jpg,jpeg|max:4096"
+            "images.*" => "file|mimes:png,jpg,jpeg|max:4096"
         ];
     }
 }
