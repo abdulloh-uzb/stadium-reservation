@@ -16,5 +16,6 @@ Route::get("/availibities/{id}", [BookingController::class, "getAvailabilities"]
 Route::post('/forgot-password', [PasswordResetController::class, "requestPasswordReset"]);
 Route::post('/reset-password', [PasswordResetController::class, "resetPassword"])->name('password.reset');
 
-
+Route::get("/reservations", [BookingController::class, "getReservations"])->middleware("auth:sanctum");
+Route::post("/update-booking/{booking}", [BookingController::class, "updateBooking"])->middleware("auth:sanctum");
 

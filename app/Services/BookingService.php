@@ -16,50 +16,59 @@ class BookingService
         $start_time = $data["start_time"];
         $end_time = $data["end_time"];
 
-        // stadion nechidan nechigacha ochiq bo'lishini bilish uchun open_time va close_time olinmoqda
-        $stadium_data = $this->getStadiumTimes($data['stadium_id']);
-        $stadium_times = $stadium_data['stadium_times'];
-        $std_open_time = $stadium_data['open_time'];
-        $std_close_time = $stadium_data['close_time'];;
-
-        if ($std_close_time && $std_close_time) {
-            // Booking qilinayotgan vaqtda stadion ochiq bo'lmasligi mumkin. 
-            // Shuni tekshirish uchun start_time va end_time open_time va close_time ni orasidaligi tekshirilmoqda.
-            if (!($std_open_time <= $start_time && $std_close_time >= $end_time)) {
-                return [
-                    'success' => false,
-                    "message" => "Stadium does not work in this time"
-                ];
-            }
+        $booked_hours = $this->generateBookedHours($data['stadium_id'], $start_time, $end_time);
+        if($booked_hours){
+            $data['booked_hours'] = $booked_hours;
+        }else{
+            return [
+                'success' => false,
+                "message" => "Stadium does not work in this time"
+            ];
         }
 
         // oldin band qilingan vaqtda booking qilinmasligi uchun databasedan tekshirilmoqda
-        $conflict = Booking::where('stadium_id', $data['stadium_id'])
-            ->where('date', $data['date'])
-            ->where(function ($query) use ($start_time, $end_time) {
-                $query->whereBetween('start_time', [$start_time, $end_time])
-                    ->orWhereBetween('end_time', [$start_time, $end_time]);
-            })
-            ->exists();
-
-        if ($conflict) {
+        if ($this->checkTime($data['stadium_id'], $data['date'], $start_time, $end_time)) {
             return [
                 'success' => false,
                 'message' => 'This time slot is already booked.'
             ];
         }
 
-        // start_time va end_time oraligidagi har bir soat booked_hours ga qo'shilmoqda
-        $booked_hours = array_filter($stadium_times, function ($time) use ($start_time, $end_time) {
-            return $time >= $start_time && $time <= $end_time;
-        });
-        $data["booked_hours"] = json_encode($booked_hours);
         Booking::create($data);
 
         return [
             "success" => true,
             "message" => "Stadium booked successfully"
         ];
+    }
+
+    public function update($updated_start_time, $updated_end_time, $booking)
+    {
+        $date = $booking->date;
+        $stadium_id = $booking->stadium_id;
+
+        if ($this->checkTime($stadium_id, $date, $updated_start_time, $updated_end_time)) {
+            return [
+                'success' => false,
+                'message' => 'This time slot is already booked.'
+            ];
+        }
+
+        $booked_hours = $this->generateBookedHours($stadium_id, $updated_start_time, $updated_end_time);
+        if(!$booked_hours){
+            return [
+                'success' => false,
+                "message" => "Stadium does not work in this time"
+            ];
+        }
+        
+        $booking->update([
+            "booked_hours" => $booked_hours,
+            "start_time" => $updated_start_time,
+            "end_time" => $updated_end_time
+        ]);
+        
+        return $booking;
     }
 
     public function getAvailabilities($date, $stadium_id)
@@ -111,5 +120,38 @@ class BookingService
             'close_time' => $std_close_time,
             'stadium_times' => $stadium_times
         ];
+    }
+
+    protected function checkTime($stadium_id, $date, $start_time, $end_time)
+    {
+        return Booking::where('stadium_id', $stadium_id)
+            ->where('date', $date)
+            ->where(function ($query) use ($start_time, $end_time) {
+                $query->where('start_time', '<', $end_time)
+                    ->where('end_time', '>', $start_time);
+            })
+            ->exists();
+    }
+
+    protected function generateBookedHours($stadium_id, $start_time, $end_time)
+    {
+        
+        $stadium_data = $this->getStadiumTimes($stadium_id);
+        $stadium_times = $stadium_data['stadium_times'];
+        $std_open_time = $stadium_data['open_time'];
+        $std_close_time = $stadium_data['close_time'];
+
+        if ($std_close_time && $std_close_time) {
+            // Booking qilinayotgan vaqtda stadion ochiq bo'lmasligi mumkin. 
+            // Shuni tekshirish uchun start_time va end_time open_time va close_time ni orasidaligi tekshirilmoqda.
+            if (!($std_open_time <= $start_time && $std_close_time >= $end_time)) {
+                return false;
+            }
+        }
+
+        $booked_hours = array_filter($stadium_times, function ($time) use ($start_time, $end_time) {
+            return $time >= $start_time && $time <= $end_time;
+        });
+        return json_encode($booked_hours);
     }
 }

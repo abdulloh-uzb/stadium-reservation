@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetAvailabilitiesRequest;
 use App\Http\Requests\StoreBookingRequest;
+use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
-use App\Models\Stadium;
 use App\Services\BookingService;
-use Constants;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -15,7 +14,8 @@ class BookingController extends Controller
 
     protected BookingService $bookingService;
 
-    public function __construct(BookingService $bookingService = null) {
+    public function __construct(BookingService $bookingService = null)
+    {
         $this->bookingService = $bookingService;
     }
 
@@ -33,7 +33,38 @@ class BookingController extends Controller
         $stadium_id = $request->all()["stadium_id"];
 
         $result = $this->bookingService->getAvailabilities($date, $stadium_id);
-       
+
         return $result;
+    }
+
+    public function cancelBooking(Booking $booking)
+    {
+        $booking->update([
+            "status" => 4
+        ]);
+        return response()->noContent();
+    }
+
+    public function updateBooking(UpdateBookingRequest $request, Booking $booking)
+    {
+
+        // TODO - update qilganda o'zi bron qilgan vaqt oraligida update qilmoqchi bo'lsa xato ishlayapti
+        // Misol uchun, 20:00 - 22:00 ni 21:00 - 22:00 ga update qilish xato ishlaydi. 
+
+        $data = $request->validated();
+
+        $updated_start_time = $data['start_time'];
+        $updated_end_time = $data['end_time'];
+        
+        $result = $this->bookingService->update($updated_start_time, $updated_end_time, $booking);
+
+        return response()->json($result);
+    }
+
+    public function getReservations()
+    {
+        $user_id = auth("sanctum")->user()->id;
+        $bookings = Booking::where("user_id", $user_id)->get();
+        return response()->json($bookings);
     }
 }
