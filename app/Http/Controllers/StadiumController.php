@@ -25,7 +25,13 @@ class StadiumController extends Controller
     public function index(Request $request)
     {
 
-        $stadiums = Stadium::paginate(10);
+        $query = Stadium::query();
+
+        if($request->has('location')){
+            $query->where('location', 'like', '%' . $request->input('location') . '%');
+        }
+
+        $stadiums = $query->paginate(5);
         return $stadiums;
     }
 
