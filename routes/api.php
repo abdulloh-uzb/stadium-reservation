@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StadiumController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,6 @@ Route::post('/reset-password', [PasswordResetController::class, "resetPassword"]
 
 Route::get("/reservations", [BookingController::class, "getReservations"])->middleware("auth:sanctum");
 Route::post("/update-booking/{booking}", [BookingController::class, "updateBooking"])->middleware("auth:sanctum");
+Route::post("/cancel/{booking}", [BookingController::class, "cancelBooking"])->middleware("auth:sanctum");
+Route::get("/search", [SearchController::class, "search"]);
 
