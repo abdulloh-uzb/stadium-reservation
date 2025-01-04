@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStadiumRequest;
 use App\Models\Stadium;
+use App\Services\BookingService;
 use App\Services\StadiumService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -13,7 +14,7 @@ class StadiumController extends Controller
 
     public StadiumService $stadium;
 
-    public function __construct(StadiumService $stadium)
+    public function __construct(public BookingService $booking, StadiumService $stadium)
     {
         $this->stadium = $stadium;
     }
@@ -21,9 +22,11 @@ class StadiumController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Stadium::all();
+
+        $stadiums = Stadium::paginate(10);
+        return $stadiums;
     }
 
     /**
@@ -65,7 +68,7 @@ class StadiumController extends Controller
      */
     public function destroy(Stadium $stadium)
     {
-        
+
         $stadium->delete();
         return response()->noContent();
     }
