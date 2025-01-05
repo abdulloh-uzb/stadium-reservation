@@ -11,13 +11,7 @@ use Illuminate\Support\Facades\Gate;
 
 class StadiumController extends Controller
 {
-
-    public StadiumService $stadium;
-
-    public function __construct(public BookingService $booking, StadiumService $stadium)
-    {
-        $this->stadium = $stadium;
-    }
+    public function __construct(public BookingService $booking, public StadiumService $stadium) {}
 
     /**
      * Display a listing of the resource.
@@ -27,7 +21,7 @@ class StadiumController extends Controller
 
         $query = Stadium::query();
 
-        if($request->has('location')){
+        if ($request->has('location')) {
             $query->where('location', 'like', '%' . $request->input('location') . '%');
         }
 
