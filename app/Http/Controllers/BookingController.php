@@ -7,7 +7,7 @@ use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
 use App\Services\BookingService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class BookingController extends Controller
 {
@@ -21,6 +21,7 @@ class BookingController extends Controller
 
     public function bookingStadium(StoreBookingRequest $request)
     {
+        Gate::authorize("create", Booking::class);
         $data = $request->validated();
         $result = $this->bookingService->booking($data);
         return response()->json($result);
@@ -39,6 +40,7 @@ class BookingController extends Controller
 
     public function cancelBooking(Booking $booking)
     {
+        Gate::authorize("delete", $booking);
         $booking->update([
             "status" => 4
         ]);
@@ -50,6 +52,8 @@ class BookingController extends Controller
 
         // TODO - update qilganda o'zi bron qilgan vaqt oraligida update qilmoqchi bo'lsa xato ishlayapti
         // Misol uchun, 20:00 - 22:00 ni 21:00 - 22:00 ga update qilish xato ishlaydi. 
+
+        Gate::authorize("update", $booking);
 
         $data = $request->validated();
 
