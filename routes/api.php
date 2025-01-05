@@ -12,7 +12,7 @@ Route::post("/register", [AuthController::class, "register"]);
 Route::post("/login", [AuthController::class, "login"]);
 
 Route::post("/booking", [BookingController::class, "bookingStadium"])->middleware('auth:sanctum');
-Route::get("/availibities/{id}", [BookingController::class, "getAvailabilities"])->middleware("auth:sanctum");
+Route::get("/availibities/{id}", [BookingController::class, "getAvailabilities"]);
 
 Route::post('/forgot-password', [PasswordResetController::class, "requestPasswordReset"]);
 Route::post('/reset-password', [PasswordResetController::class, "resetPassword"])->name('password.reset');
