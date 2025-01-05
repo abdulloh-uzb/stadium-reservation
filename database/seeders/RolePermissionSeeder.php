@@ -28,7 +28,7 @@ class RolePermissionSeeder extends Seeder
             "manager" => [
                 "stadium:view", "stadium:viewAny", "stadium:create", "stadium:update", "stadium:delete",
                 "review:view", "review:viewAny", "review:delete",
-                "booking:view", "booking:viewAny",
+                "booking:view", "booking:viewAny", "booking:delete"
             ],
             "helpdesk-support" => [
                 "chat:sendMessage", "chat:editMessage", "chat:deleteMessage", "chat:viewChat",
