@@ -32,7 +32,7 @@ class StadiumController extends Controller
         }
 
         $stadiums = $query->paginate(5);
-        return $stadiums;
+        return response()->json($stadiums);
     }
 
     /**
