@@ -11,5 +11,8 @@ class Booking extends Model
 
     protected $fillable = ["stadium_id", "user_id", "start_time", "end_time", "status", "date", "booked_hours"];
 
-    
+    public function stadium()
+    {
+        return $this->belongsTo(Stadium::class);
+    }
 }
