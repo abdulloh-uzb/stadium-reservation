@@ -15,4 +15,9 @@ class Booking extends Model
     {
         return $this->belongsTo(Stadium::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
