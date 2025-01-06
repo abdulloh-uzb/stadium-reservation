@@ -41,9 +41,7 @@ class BookingController extends Controller
     public function cancelBooking(Booking $booking)
     {
         Gate::authorize("delete", $booking);
-        $booking->update([
-            "status" => 4
-        ]);
+        $booking->delete();
         return response()->noContent();
     }
 

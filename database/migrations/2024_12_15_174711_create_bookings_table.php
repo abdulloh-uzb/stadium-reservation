@@ -20,6 +20,7 @@ return new class extends Migration
             $table->dateTime("date");
             $table->json("booked_hours");
             $table->enum("status", [1,2,3,4])->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
