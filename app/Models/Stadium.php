@@ -34,4 +34,10 @@ class Stadium extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function reviews()
+    {
+        return $this->through("bookings")->has("review")->with("user:id,name");
+    }
+
 }

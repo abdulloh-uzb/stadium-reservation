@@ -10,7 +10,15 @@ class Review extends Model
     /** @use HasFactory<\Database\Factories\ReviewFactory> */
     use HasFactory;
 
+    protected $fillable = ["booking_id", "user_id", "rating", "comment"];
+
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
+
 }
