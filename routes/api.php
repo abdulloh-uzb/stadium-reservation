@@ -3,11 +3,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StadiumController;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('stadium', StadiumController::class)->middleware("auth:sanctum");
+Route::get("/review/{stadium}", [StadiumController::class, "getStadiumReviews"]);
+
 Route::post("/register", [AuthController::class, "register"]);
 Route::post("/login", [AuthController::class, "login"]);
 
@@ -22,3 +25,5 @@ Route::post("/update-booking/{booking}", [BookingController::class, "updateBooki
 Route::post("/cancel/{booking}", [BookingController::class, "cancelBooking"])->middleware("auth:sanctum");
 Route::get("/search", [SearchController::class, "search"]);
 
+// Reviews
+Route::post("/review", [ReviewController::class, "store"])->middleware("auth:sanctum");

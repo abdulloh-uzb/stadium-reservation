@@ -72,4 +72,11 @@ class StadiumController extends Controller
         $stadium->delete();
         return response()->noContent();
     }
+
+    public function getStadiumReviews(Stadium $stadium)
+    {
+        $reviews = $stadium->reviews;
+        return response()->json($reviews);
+    }
+
 }
