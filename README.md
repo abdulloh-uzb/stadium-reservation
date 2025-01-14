@@ -14,7 +14,7 @@ My project helps to connect between users and stadium owners. Users can find nea
 This project includes a set of role-based permissions for various user roles, enabling different access levels and actions within the system. The features are organized as follows:
 
 ### Admin
-- All
+- Can do everything
 
 ### Customer
 - **Stadium**: View stadium details and view all stadiums
@@ -44,6 +44,18 @@ Each role is granted specific permissions to interact with different entities su
 1. Navigate to the project directory
     ```bash
     cd my-awesome-project
+
+2. Generate the application key:
+    ```bash
+    php artisan key:generate
+
+3. Run database migrations
+    ```bash
+    php artisan migrate
+
+4. Generate fake data
+    ```bash
+    php artisan db:seed
 
 2. Run server using php (You need server to run project in local)
     ```bash
