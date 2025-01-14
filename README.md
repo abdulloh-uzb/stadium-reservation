@@ -42,11 +42,11 @@ Each role is granted specific permissions to interact with different entities su
 ## Usage
 
 1. Navigate to the project directory
-    ``bash
+    ```bash
     cd my-awesome-project
 
 2. Run server using php (You need server to run project in local)
-    ``bash
+    ```bash
     php artisan serve
 
 Project will be in http://localhost:8000
