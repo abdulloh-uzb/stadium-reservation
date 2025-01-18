@@ -36,7 +36,7 @@ class StadiumController extends Controller
     {
         Gate::authorize("create", Stadium::class);
         $this->stadium->store($request);
-        return response()->json(["success" => true]);
+        return response()->json(["success" => true], 201);
     }
 
     /**
@@ -44,7 +44,7 @@ class StadiumController extends Controller
      */
     public function show(Stadium $stadium)
     {
-        return response($stadium);
+        return response()->json($stadium->toArray());
     }
 
 
