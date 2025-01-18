@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Booking;
 use App\Models\Stadium;
-use Constants;
+use App\Helpers\Constants;
 
 class BookingService
 {
