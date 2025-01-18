@@ -2,8 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Stadium;
-use Constants;
+use App\Helpers\Constants;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
